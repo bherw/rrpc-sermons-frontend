@@ -1,0 +1,40 @@
+{
+  "name": "TODO",
+  "description": "TODO",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "sapper dev",
+    "build": "sapper build",
+    "export": "sapper export",
+    "start": "node __sapper__/build",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "test": "run-p --race dev cy:run"
+  },
+  "dependencies": {
+    "compression": "^1.7.1",
+    "cross-fetch": "^3.0.4",
+    "css-loader": "^2.1.1",
+    "eventemitter3": "^3.1.2",
+    "lodash-es": "^4.17.14",
+    "material-components-web": "^2.3.1",
+    "node-fetch": "^2.6.0",
+    "node-sass": "^4.12.0",
+    "node-sass-middleware": "^0.11.0",
+    "polka": "^0.5.0",
+    "sass-loader": "^7.1.0",
+    "sirv": "^0.4.0",
+    "style-loader": "^0.23.1",
+    "svelte-preprocess": "^2.14.4",
+    "sveltedoc-parser": "^1.2.0",
+    "wavesurfer.js": "^2.2.1"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^0.19.1",
+    "npm-run-all": "^4.1.5",
+    "sapper": "^0.27.4",
+    "svelte": "^3.6.7",
+    "svelte-loader": "^2.9.0",
+    "webpack": "^4.35.3"
+  }
+}

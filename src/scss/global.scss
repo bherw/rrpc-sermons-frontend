@@ -1,0 +1,134 @@
+@import 'scss/const';
+
+@import '@material/typography/mdc-typography';
+
+// Top bar, nav
+@import '@material/top-app-bar/mdc-top-app-bar';
+@import '@material/button/mdc-button';
+@import '@material/icon-button/mdc-icon-button';
+
+// Desktop nav
+@import '@material/tab/mdc-tab';
+@import '@material/tab-bar/mdc-tab-bar';
+@import '@material/tab-scroller/mdc-tab-scroller';
+@import '@material/tab-indicator/mdc-tab-indicator';
+
+// Mobile nav
+@import '@material/drawer/mdc-drawer';
+@import '@material/list/mdc-list';
+@import '@material/icon-button/mdc-icon-button';
+
+// sermons
+@import '@material/textfield/mdc-text-field';
+@import '@material/menu-surface/mdc-menu-surface';
+@import '@material/menu/mdc-menu';
+
+// Layout
+body {
+  margin: 0;
+  display: flex;
+  height: 100vh;
+}
+#sapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main.container {
+  width: 100%;
+}
+
+// Nav
+.mdc-top-app-bar {
+  background-color: white;
+  color: var(--mdc-theme-primary, $mdc-theme-primary);
+  position: static;
+
+  @media screen and (min-width: 961px) {
+    h1 {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .mdc-tab-bar {
+      display: none;
+    }
+  }
+}
+
+@media screen and (min-width: 961px) {
+  .main-menu-button {
+    display: none;
+  }
+}
+
+.mdc-drawer-app-content {
+  flex: auto;
+  overflow: auto;
+  position: relative;
+}
+
+// Various
+.error {
+  color: red;
+}
+
+.level {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.level-left,
+.level-right {
+  align-items: center;
+  display: flex;
+}
+
+.container {
+  flex-grow: 1;
+  margin: 0 auto;
+  position: relative;
+  width: auto;
+  max-width: 1344px;
+}
+
+.content-container {
+  margin: 0 16px;
+}
+@media screen and (min-width: 780px), print {
+  .content-container {
+    margin: 0 32px;
+  }
+}
+
+.desktop {
+  @media screen and (max-width: 960px) {
+    display: none;
+  }
+}
+
+.mobile {
+  @media screen and (min-width: 961px) {
+    display: none;
+  }
+}
+
+// Hidden offscreen, but still rendered momentarily. Used for copy inputs
+.hidden {
+  display: none;
+  position: absolute;
+  left: -99999px;
+}
+
+.styled-text {
+  color: inherit;
+  font-style: inherit;
+  text-decoration: inherit;
+}
+.styled-text:visited {
+  color: inherit;
+  font-style: inherit;
+  text-decoration: inherit;
+}
