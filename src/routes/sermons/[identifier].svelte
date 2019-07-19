@@ -1,8 +1,26 @@
 <script context="module">
-  import { getSermon } from 'api/sermons'
+  import { client } from 'api/graphql'
+  import SermonQuery from './SermonQuery.gql'
 
   export async function preload({ params, query }) {
-    return { sermon: await getSermon(params.identifier), seek: query.t || 0 }
+    const id = `sermons/${params.identifier}`
+    const preload = await client
+      .query({
+        query: SermonQuery,
+        variables: { id },
+      })
+      .result()
+
+    if (!preload.data.node) {
+      this.error(404, 'Not found')
+      return
+    }
+
+    return {
+      id,
+      preload,
+      seek: query.t || 0,
+    }
   }
 </script>
 
@@ -12,17 +30,26 @@
   import BiblePassages from 'components/sermons/BiblePassages.svelte'
   import Title from 'components/Title.svelte'
 
-  export let sermon, seek
+  export let id, preload, seek
+  let speakerLink, titleWithSeries, recordedAt
 
-  $: speakerLink = `/sermons?query=speaker:"${sermon.speaker}"`
-  $: titleWithSeries = makeTitleWithSeries(sermon)
-  $: recordedAt = new Date(sermon.recorded_at).toLocaleString(undefined, {
-    month: 'short',
-    year: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-  })
+  client.restore(SermonQuery, preload.data)
+  const promise = client
+    .query({ query: SermonQuery, variables: { id } })
+    .result()
+    .then(res => {
+      let sermon = res.data.node
+      speakerLink = `/sermons?query=speaker:"${sermon.speaker.name}"`
+      titleWithSeries = makeTitleWithSeries(sermon)
+      recordedAt = new Date(sermon.recordedAt).toLocaleString(undefined, {
+        month: 'short',
+        year: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+      })
+      return sermon
+    })
 </script>
 
 <style>
@@ -61,35 +88,40 @@
   }
 </style>
 
-<Title section={sermon.title} title={titleWithSeries} />
+{#await promise}
+  Loading...
+{:then sermon}
+  <Title section={sermon.title} title={titleWithSeries} />
 
-<AudioPlayer
-  src={sermon.audio_url}
-  waveformUrl={sermon.audio_waveform_url}
-  duration={sermon.duration}
-  {seek} />
+  <AudioPlayer
+    src={sermon.audioUrl}
+    waveformUrl={sermon.audioWaveformUrl}
+    duration={sermon.duration}
+    {seek} />
+  <section>
+    <div class="container" class:container--with-aside={sermon.series}>
+      <div class="main">
+        <h1 class="mdc-typography--headline5">{sermon.title}</h1>
 
-<section>
-
-  <div class="container" class:container--with-aside={sermon.series}>
-    <div class="main">
-      <h1 class="mdc-typography--headline5">{sermon.title}</h1>
-      <div>
-        <div class="mdc-typography--subtitle2">
-          <a class="styled-text" href={speakerLink}>{sermon.speaker_name}</a>
+        <div>
+          <div class="mdc-typography--subtitle2">
+            <a class="styled-text" href={speakerLink}>{sermon.speaker.name}</a>
+          </div>
+          <div class="mdc-typography--caption">{recordedAt}</div>
         </div>
-        <div class="mdc-typography--caption">{recordedAt}</div>
+
+        <BiblePassages reading={sermon.scriptureReading} focus={sermon.scriptureFocus} />
       </div>
-      <BiblePassages reading={sermon.scripture_reading} focus={sermon.scripture_focus} />
+
+      {#if sermon.series}
+        <aside>
+          <section>
+            <header class="series-header">
+              <h1 class="mdc-typography--headline6">{sermon.series.name}</h1>
+            </header>
+          </section>
+        </aside>
+      {/if}
     </div>
-    {#if sermon.series}
-      <aside>
-        <section>
-          <header class="series-header">
-            <h1 class="mdc-typography--headline6">{sermon.series}</h1>
-          </header>
-        </section>
-      </aside>
-    {/if}
-  </div>
-</section>
+  </section>
+{/await}

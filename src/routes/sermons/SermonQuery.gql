@@ -1,0 +1,21 @@
+query($id: ID!) {
+  node(id: $id) {
+    ... on Sermon {
+      id
+      recordedAt
+      title
+      scriptureReading
+      scriptureFocus
+      speaker {
+        id
+        name
+      }
+      series {
+        id
+        name
+      }
+      audioUrl
+      audioWaveformUrl
+    }
+  }
+}
