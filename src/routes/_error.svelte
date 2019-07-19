@@ -9,6 +9,8 @@
   <title>{status}</title>
 </svelte:head>
 
-<h1>{status}</h1>
+<div class="content-container">
+  <h1>{status}</h1>
 
-<Error {error} />
+  <Error {error} />
+</div>
