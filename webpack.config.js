@@ -37,6 +37,11 @@ module.exports = {
             { loader: 'sass-loader', options: { includePaths: ['./node_modules'] } }, // compiles Sass to CSS, using Node Sass by default
           ],
         },
+        {
+          test: /\.(graphql|gql)$/,
+          use: 'graphql-mini-transforms/webpack',
+          exclude: /node_modules/,
+        },
       ],
     },
     mode,
@@ -77,6 +82,11 @@ module.exports = {
             'css-loader', // translates CSS into CommonJS
             { loader: 'sass-loader', options: { includePaths: ['./node_modules'] } }, // compiles Sass to CSS, using Node Sass by default
           ],
+        },
+        {
+          test: /\.(graphql|gql)$/,
+          use: 'graphql-mini-transforms/webpack',
+          exclude: /node_modules/,
         },
       ],
     },

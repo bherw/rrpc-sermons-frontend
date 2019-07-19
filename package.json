@@ -30,10 +30,18 @@
     "wavesurfer.js": "^2.2.1"
   },
   "devDependencies": {
+    "apollo-cache-inmemory": "^1.6.2",
+    "apollo-client": "^2.6.0",
+    "apollo-link": "^1.2.12",
+    "apollo-link-error": "^1.1.11",
+    "apollo-link-http": "^1.5.15",
+    "graphql": "^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0",
+    "graphql-mini-transforms": "^1.0.3",
     "http-proxy-middleware": "^0.19.1",
     "npm-run-all": "^4.1.5",
     "sapper": "^0.27.4",
     "svelte": "^3.6.7",
+    "svelte-apollo": "^0.3.0",
     "svelte-loader": "^2.9.0",
     "webpack": "^4.35.3"
   }

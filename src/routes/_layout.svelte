@@ -8,6 +8,7 @@
   import TabBar from 'components/material/TabBar.svelte'
   import Tab from 'components/material/Tab.svelte'
   import { section } from 'state'
+  import { setClient, client } from 'api/graphql'
 
   export let segment
 
@@ -15,6 +16,8 @@
   let drawer, appBar
 
   const routes = ['sermons']
+
+  setClient(client)
 
   onMount(() => {
     drawer = MDCDrawer.attachTo(drawerNode)
