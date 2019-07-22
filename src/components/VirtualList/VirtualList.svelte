@@ -7,7 +7,7 @@
   import { registerResizeListener } from 'util/resize'
   import VirtualListItem from './VirtualListItem'
 
-  const SCROLL_EVENT_DELAY = 300
+  const SCROLL_EVENT_DELAY = 100
   const DEFAULT_ITEM_HEIGHT = 100
   const RENDER_BUFFER_FACTOR = 2.5
 
