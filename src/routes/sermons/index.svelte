@@ -1,20 +1,19 @@
 <script context="module">
-  import { getSermons } from 'api/sermons'
+  import { client } from 'api/graphql'
+  import SermonsQuery from './SermonsQuery.gql'
   import SermonListModel from 'components/sermons/SermonListModel'
 
   export async function preload({ params, query }) {
-    let model
-    let error = {}
-    try {
-      model = new SermonListModel({
-        query: query.query || '',
-        preload: await getSermons(query.query),
-        order: query.order || 'newest_first',
+    const search = query.query
+    const order = query.order || 'newest_first'
+    const preload = await client
+      .query({
+        query: SermonsQuery,
+        variables: { search, order },
       })
-    } catch (e) {
-      error[query.query] = e
-    }
-    return { query: query.query, order: query.order, model, error }
+      .result()
+
+    return { search, order, preload }
   }
 </script>
 
@@ -27,60 +26,61 @@
   import Title from 'components/Title'
   import throttle from 'lodash-es/throttle'
 
-  export let model
+  export let preload
   export let error = {}
-  export let query = ''
+  export let search = ''
   export let order = 'newest_first'
 
-  let preload = {}
+  client.restore(SermonsQuery, preload.data)
+
+  let model = new SermonListModel({ query: SermonsQuery, variables: { search, order } })
+  let modelLoaded = model.loadMore()
 
   let searchMenuIsOpen = false
 
-  $: onSetQuery(query, order)
+  $: onSetSearch(search, order)
 
   function toggleSearchMenu() {
     searchMenuIsOpen = !searchMenuIsOpen
   }
 
-  let onQueryChanged = throttle(
+  let onSearchChanged = throttle(
     event => {
-      query = event.srcElement.value
+      search = event.srcElement.value
     },
     500,
     { trailing: true }
   )
 
-  async function onSetQuery(query, order) {
+  async function onSetSearch(search, order) {
     // Initial setup phase
     if (typeof window === 'undefined') return
 
-    if (!model || (query === model.query() && order === model.order())) return
+    // No change
+    if (!model || (search === model.variables().search && order === model.variables().order)) return
 
+    // Update location bar
     let url = new URL(window.location)
     url.pathname = '/sermons'
     url.search = ''
-    if (query) {
-      url.searchParams.append('query', query)
+    if (search) {
+      url.searchParams.append('query', search)
     }
     window.history.replaceState({}, 'Sermons — Russell RPC', url)
 
-    let newModel = new SermonListModel({ query, preload: preload[query], order })
-    newModel
-      .getPage(0)
-      .then(page => {
-        model = newModel
-      })
-      .catch(err => {
-        error[query] = err
-      })
-  }
-
-  function search(event) {
-    //query = event.detail.query
+    const newModel = new SermonListModel({ query: SermonsQuery, variables: { search, order } })
+    try {
+      const newModelLoaded = newModel.loadMore()
+      await newModelLoaded
+      model = newModel
+      modelLoaded = newModelLoaded
+    } catch (err) {
+      error[search] = err
+    }
   }
 
   function clear() {
-    query = ''
+    search = ''
   }
 </script>
 
@@ -122,11 +122,11 @@
 
 <div class="content-container">
   <div class="search">
-    <TextField outlined leadingIcon trailingIcon label="Search sermons" value={query}>
-      <input type="text" class="mdc-text-field__input" on:keyup={onQueryChanged} value={query} />
+    <TextField outlined leadingIcon trailingIcon label="Search sermons" value={search}>
+      <input type="text" class="mdc-text-field__input" on:keyup={onSearchChanged} value={search} />
 
       <!-- TODO: IconButton can't be clicked in here for some reason -->
-      <i class="material-icons mdc-text-field__icon" on:click={search}>search</i>
+      <i class="material-icons mdc-text-field__icon">search</i>
       <button
         class="mdc-icon-button material-icons mdc-text-field__icon dropdown-toggle"
         class:upside-down={searchMenuIsOpen}
@@ -135,7 +135,7 @@
         aria-label="Advanced search">
         arrow_drop_down
       </button>
-      {#if query}
+      {#if search}
         <button
           class="material-icons mdc-icon-button mdc-text-field__icon"
           tabindex="0"
@@ -148,23 +148,24 @@
     <div class="mdc-menu-surface--anchor">
       <SearchMenu
         open={searchMenuIsOpen}
-        bind:query
-        on:search={search}
+        bind:query={search}
         on:closed={() => (searchMenuIsOpen = false)} />
     </div>
   </div>
 
-  {#if error[query]}
-    <Error error={error[query]} />
-  {:else}
-    <div class="results-header level">
-      <div class="level-left">
-        <p>{model.length()} sermons found</p>
+  {#await modelLoaded then }
+    {#if error[search]}
+      <Error error={error[search]} />
+    {:else}
+      <div class="results-header level">
+        <div class="level-left">
+          <p>{model.length()} sermons found</p>
+        </div>
+        <div class="level-right">
+          <OrderControl bind:order />
+        </div>
       </div>
-      <div class="level-right">
-        <OrderControl bind:order />
-      </div>
-    </div>
-    <SermonList {model} />
-  {/if}
+      <SermonList {model} />
+    {/if}
+  {/await}
 </div>

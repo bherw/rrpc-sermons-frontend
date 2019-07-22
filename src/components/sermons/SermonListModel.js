@@ -1,61 +1,66 @@
 import VirtualListModel from '../VirtualList/VirtualListModel'
-import { getSermons } from 'api/sermons'
-
-const PAGE_SIZE = 25
+import { client } from 'api/graphql'
 
 export default class SermonListModel extends VirtualListModel {
-  constructor({ query, preload, order }) {
+  constructor({ query, variables }) {
     super()
 
     this._query = query
-    this._order = order || 'newest_first'
-    this._pages = []
-
-    if (preload) {
-      this._pages.push(Promise.resolve(preload.results))
-      this._length = preload.total
-    }
+    this._variables = variables
   }
 
   length() {
-    return this._length
+    return this._sermons ? this._sermons.totalCount : 0
   }
 
   query() {
     return this._query
   }
 
-  order() {
-    return this._order
+  variables() {
+    return this._variables
   }
 
   async get(index) {
-    if (index < 0 || index >= this._length) {
-      throw new Error(`Index out of bounds: ${index}`)
+    while (index >= this._sermons.nodes.length) {
+      if (index < 0 || index >= this._length) {
+        throw new Error(`Index out of bounds: ${index}`)
+      }
+      await this.loadMore()
     }
 
-    let pageNum = Math.floor(index / PAGE_SIZE)
-    let page = await this.getPage(pageNum)
-
-    return { sermon: page[index % PAGE_SIZE] }
+    return { sermon: this._sermons.nodes[index] }
   }
 
-  async getPage(num) {
-    if (
-      (!this._length && num != 0) ||
-      (this._length && (num < 0 || num > Math.ceil(this._length / PAGE_SIZE)))
-    ) {
-      throw new Error(`Page index out of bounds: ${num}`)
+  async loadMore() {
+    if (!this._loadingMore) {
+      this._loadingMore = this._loadMore()
+    }
+    await this._loadingMore
+  }
+
+  async _loadMore() {
+    const variables = this._sermons
+      ? { ...this._variables, cursor: this._sermons.pageInfo.endCursor }
+      : this._variables
+    const result = await client.query({ query: this._query, variables }).result()
+
+    if (!this._sermons) {
+      this._sermons = result.data.sermons
+      this._loadingMore = false
+      return
     }
 
-    if (!(num in this._pages)) {
-      this._pages[num] = getSermons(this._query, num, this._order).then(res => {
-        this._length = res.total
-        this.emit('loaded')
-        return res.results
-      })
-    }
+    const { __typename, nodes, pageInfo, totalCount } = result.data.sermons
 
-    return await this._pages[num]
+    if (!nodes.length) return
+
+    this._sermons = {
+      __typename,
+      nodes: [...this._sermons.nodes, ...nodes],
+      pageInfo,
+      totalCount,
+    }
+    this._loadingMore = false
   }
 }

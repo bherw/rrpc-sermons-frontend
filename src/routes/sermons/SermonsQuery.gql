@@ -1,0 +1,23 @@
+query Sermons($search: String, $order: SermonOrder, $cursor: String) {
+  sermons(search: $search, order: $order, after: $cursor) {
+    nodes {
+      id
+      identifier
+      scriptureFocus
+      scriptureReading
+      title
+      speaker {
+        id
+        name
+      }
+      series {
+        id
+        name
+      }
+    }
+    totalCount
+    pageInfo {
+      endCursor
+    }
+  }
+}

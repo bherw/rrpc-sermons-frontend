@@ -1,5 +1,5 @@
 export function makeTitleWithSeries(sermon) {
-  return sermon.title + (sermon.series ? ' — ' + sermon.series : '')
+  return sermon.title + (sermon.series ? ' — ' + sermon.series.name : '')
 }
 
 export function makeElasticQuery(parts) {

@@ -1,6 +1,6 @@
 <script>
   import { makeTitleWithSeries } from './util'
-  import {goto} from '@sapper/app'
+  import { goto } from '@sapper/app'
 
   export let sermon
   export let showSpeaker = true
@@ -41,17 +41,20 @@
 
 <svelte:options immutable />
 
-<li class="mdc-list-item" class:mdc-list-item--three-line={showSpeaker} on:click={() => goto(`/sermons/${sermon.identifier}`)}>
-  <a href="/sermons/{sermon.identifier}">
+<li
+  class="mdc-list-item"
+  class:mdc-list-item--three-line={showSpeaker}
+  on:click={() => goto(`/${sermon.id}`)}>
+  <a href="/{sermon.id}">
     <div class="mdc-list-item__text">
       <div class="primary">
         <div class="title">{titleWithSeries}</div>
         <div class="mdc-typography--caption date">{sermon.identifier}</div>
       </div>
       <div class="mdc-list-item__secondary-text">
-        <div>{sermon.scripture_focus || sermon.scripture_reading}</div>
+        <div>{sermon.scriptureFocus || sermon.scriptureReading}</div>
         {#if showSpeaker}
-          <div class="caption">{sermon.speaker_name}</div>
+          <div class="caption">{sermon.speaker.name}</div>
         {/if}
       </div>
     </div>
