@@ -6,13 +6,12 @@
 
   let node // ref
   let resizeListener
-
-  $: length = model.length()
-  $: shown = itemHeights[index] > 0
-  $: props = model.get(index)
+  let shown = itemHeights[index] > 0
+  let length = model.length()
+  let promise = model.get(index)
 
   onMount(async () => {
-    await props
+    await promise
     requestAnimationFrame(() => {
       if (!node || typeof index === 'undefined') return
 
@@ -27,6 +26,7 @@
     let rect = node.getBoundingClientRect()
     if (itemHeights[index] != rect.height) {
       itemHeights[index] = rect.height
+      shown = true
     }
   }
 </script>
@@ -54,9 +54,7 @@
   aria-hidden={!shown}
   bind:this={node}
   style="transform: translateY({offset}px);">
-  {#await props}
-    <span />
-  {:then props}
+  {#await promise then props}
     <svelte:component
       this={component}
       {...props}
@@ -64,7 +62,5 @@
       virtualLength={length}
       virtualKey={index}
       on:recalculateHeight={recalculateHeight} />
-  {:catch}
-    <span />
   {/await}
 </div>
