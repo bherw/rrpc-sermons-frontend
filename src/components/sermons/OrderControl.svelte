@@ -7,14 +7,13 @@
   const orders = {
     oldest_first: 'Oldest first',
     newest_first: 'Newest first',
-    relevance: 'Relevance',
   }
 </script>
 
 <IconButtonMenu icon="sort" label="Sort">
   {#each Object.entries(orders) as [id, name]}
     <MenuItem class={id === order ? 'mdc-list-item--selected' : ''} on:click={() => (order = id)}>
-       {name}
+      {name}
     </MenuItem>
   {/each}
 </IconButtonMenu>
