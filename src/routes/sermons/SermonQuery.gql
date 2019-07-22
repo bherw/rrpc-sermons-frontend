@@ -1,4 +1,4 @@
-query($id: ID!) {
+query SermonQuery($id: ID!) {
   node(id: $id) {
     ... on Sermon {
       id
