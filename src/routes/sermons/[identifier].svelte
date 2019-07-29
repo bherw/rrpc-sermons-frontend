@@ -34,7 +34,7 @@
   let speakerLink, seriesLink, titleWithSeries, recordedAt
 
   client.restore(SermonQuery, preload.data)
-  const promise = client
+  $: promise = client
     .query({ query: SermonQuery, variables: { id } })
     .result()
     .then(res => {
