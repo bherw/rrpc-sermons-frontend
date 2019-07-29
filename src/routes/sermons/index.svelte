@@ -4,7 +4,7 @@
   import SermonListModel from 'components/sermons/SermonListModel'
 
   export async function preload({ params, query }) {
-    const search = query.query
+    const search = query.query || ''
     const order = query.order || 'newest_first'
     const preload = await client
       .query({
