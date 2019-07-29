@@ -31,7 +31,7 @@
   import Title from 'components/Title.svelte'
 
   export let id, preload, seek
-  let speakerLink, titleWithSeries, recordedAt
+  let speakerLink, seriesLink, titleWithSeries, recordedAt
 
   client.restore(SermonQuery, preload.data)
   const promise = client
@@ -40,6 +40,7 @@
     .then(res => {
       let sermon = res.data.node
       speakerLink = `/sermons?query=speaker:"${sermon.speaker.name}"`
+      seriesLink = `/sermons?query=series:"${sermon.series.name}"&order=oldest_first`
       titleWithSeries = makeTitleWithSeries(sermon)
       recordedAt = new Date(sermon.recordedAt).toLocaleString(undefined, {
         month: 'short',
@@ -117,7 +118,9 @@
         <aside>
           <section>
             <header class="series-header">
-              <h1 class="mdc-typography--headline6">{sermon.series.name}</h1>
+              <h1 class="mdc-typography--headline6" style="margin-bottom:0">
+                <a href={seriesLink} class="unstyled-link">{sermon.series.name}</a>
+              </h1>
             </header>
           </section>
         </aside>
