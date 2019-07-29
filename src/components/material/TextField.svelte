@@ -39,9 +39,9 @@
       <div class="mdc-notched-outline__leading" />
       <div class="mdc-notched-outline__notch">
         {#if hadValueOnLoad}
-          <label class="mdc-floating-label mdc-floating-label--float-above"> {label} </label>
+          <label class="mdc-floating-label mdc-floating-label--float-above">{label}</label>
         {:else}
-          <label class="mdc-floating-label"> {label} </label>
+          <label class="mdc-floating-label">{label}</label>
         {/if}
       </div>
       <div class="mdc-notched-outline__trailing" />
