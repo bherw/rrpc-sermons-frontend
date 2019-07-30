@@ -16,7 +16,7 @@
     "cross-fetch": "^3.0.4",
     "css-loader": "^2.1.1",
     "eventemitter3": "^3.1.2",
-    "lodash-es": "^4.17.14",
+    "lodash-es": "^4.17.15",
     "luxon": "^1.17.2",
     "material-components-web": "^2.3.1",
     "node-fetch": "^2.6.0",
@@ -26,7 +26,7 @@
     "sass-loader": "^7.1.0",
     "sirv": "^0.4.0",
     "style-loader": "^0.23.1",
-    "svelte-preprocess": "^2.14.4",
+    "svelte-preprocess": "^2.15.0",
     "sveltedoc-parser": "^1.2.0",
     "wavesurfer.js": "^2.2.1"
   },
@@ -40,10 +40,10 @@
     "graphql-mini-transforms": "^1.0.3",
     "http-proxy-middleware": "^0.19.1",
     "npm-run-all": "^4.1.5",
-    "sapper": "^0.27.4",
-    "svelte": "^3.6.7",
+    "sapper": "^0.27.8",
+    "svelte": "^3.6.10",
     "svelte-apollo": "^0.3.0",
-    "svelte-loader": "^2.9.0",
-    "webpack": "^4.35.3"
+    "svelte-loader": "^2.13.6",
+    "webpack": "^4.38.0"
   }
 }
