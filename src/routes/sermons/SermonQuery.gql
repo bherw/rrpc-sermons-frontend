@@ -10,9 +10,11 @@ query SermonQuery($id: ID!) {
         id
         name
       }
+      seriesIndex
       series {
         id
         name
+        sermonsCount
       }
       audioUrl
       audioWaveformUrl

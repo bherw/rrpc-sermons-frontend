@@ -123,6 +123,9 @@
               <h1 class="mdc-typography--headline6" style="margin-bottom:0">
                 <a href={seriesLink} class="unstyled-link">{sermon.series.name}</a>
               </h1>
+              <div>
+                {sermon.seriesIndex}/{sermon.series.sermonsCount} &mdash; {sermon.speaker.name}
+              </div>
             </header>
           </section>
         </aside>
