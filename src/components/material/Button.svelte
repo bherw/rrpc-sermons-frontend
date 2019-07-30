@@ -3,6 +3,7 @@
   import { onMount } from 'svelte'
 
   export let elevated = false
+  export let href = null
 
   let node, ripple
 
@@ -11,10 +12,21 @@
   })
 </script>
 
-<button
-  bind:this={node}
-  class="mdc-button {$$props.class ? $$props.class : ''}"
-  class:mdc-button--elevated={elevated}
-  on:click>
-  <slot />
-</button>
+{#if href}
+  <a
+    {href}
+    bind:this={node}
+    class="mdc-button {$$props.class ? $$props.class : ''}"
+    class:mdc-button--elevated={elevated}
+    on:click>
+    <slot />
+  </a>
+{:else}
+  <button
+    bind:this={node}
+    class="mdc-button {$$props.class ? $$props.class : ''}"
+    class:mdc-button--elevated={elevated}
+    on:click>
+    <slot />
+  </button>
+{/if}
