@@ -1,6 +1,7 @@
 <script>
   import { makeTitleWithSeries } from './util'
   import { goto } from '@sapper/app'
+  import { DateTime } from 'luxon'
 
   export let sermon
   export let showSpeaker = true
@@ -10,6 +11,21 @@
   export let virtualIndex, virtualLength, virtualKey
 
   $: titleWithSeries = showSeries ? makeTitleWithSeries(sermon) : sermon.title
+  $: recordedAtStr = formatDate(sermon.recordedAt)
+
+  function formatDate(recordedAt) {
+    recordedAt = DateTime.fromISO(recordedAt)
+
+    if (recordedAt > DateTime.local().minus({ days: 7 })) {
+      return recordedAt.toFormat('ccc')
+    }
+
+    if (recordedAt.year === DateTime.local().year) {
+      return recordedAt.toLocaleString({ month: 'short', day: 'numeric' })
+    }
+
+    return recordedAt.toLocaleString(DateTime.DATE_MED)
+  }
 </script>
 
 <style>
@@ -49,7 +65,7 @@
     <div class="mdc-list-item__text">
       <div class="primary">
         <div class="title">{titleWithSeries}</div>
-        <div class="mdc-typography--caption date">{sermon.identifier}</div>
+        <div class="mdc-typography--caption date">{recordedAtStr}</div>
       </div>
       <div class="mdc-list-item__secondary-text">
         <div>{sermon.scriptureFocus || sermon.scriptureReading}</div>

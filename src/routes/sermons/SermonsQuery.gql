@@ -2,7 +2,7 @@ query Sermons($search: String, $order: SermonOrder, $cursor: String) {
   sermons(search: $search, order: $order, after: $cursor) {
     nodes {
       id
-      identifier
+      recordedAt
       scriptureFocus
       scriptureReading
       title

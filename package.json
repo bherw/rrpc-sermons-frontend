@@ -17,6 +17,7 @@
     "css-loader": "^2.1.1",
     "eventemitter3": "^3.1.2",
     "lodash-es": "^4.17.14",
+    "luxon": "^1.17.2",
     "material-components-web": "^2.3.1",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.12.0",
