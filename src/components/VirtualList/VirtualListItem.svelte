@@ -2,7 +2,7 @@
   import { registerResizeListener } from 'util/resize'
   import { onMount } from 'svelte'
 
-  export let index, key, component, offset, itemHeights, model
+  export let index, key, component, offset, itemHeights, model, tabindex
 
   let node // ref
   let resizeListener
@@ -58,6 +58,7 @@
     <svelte:component
       this={component}
       {...props}
+      {tabindex}
       virtualIndex={index}
       virtualLength={length}
       virtualKey={index}

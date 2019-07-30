@@ -1,5 +1,6 @@
 <script>
-  import { onMount } from 'svelte'
+  import { onMount, createEventDispatcher } from 'svelte'
+  import { MDCList } from '@material/list'
   import range from 'util/range'
   import VirtualListModel from './VirtualListModel'
   import throttle from 'lodash-es/throttle'
@@ -10,6 +11,8 @@
   const SCROLL_EVENT_DELAY = 100
   const DEFAULT_ITEM_HEIGHT = 100
   const RENDER_BUFFER_FACTOR = 2.5
+  const dispatch = createEventDispatcher()
+  const tabindex = [0]
 
   export let component
   export let model
@@ -21,6 +24,7 @@
   let listOffset = 0
 
   let container // refs
+  let list
 
   let scrollListener, resizeListener
 
@@ -38,6 +42,11 @@
 
     resizeListener = registerResizeListener(onResize)
     onResize()
+
+    list = new MDCList(container)
+    list.listen('MDCList:action', event => {
+      dispatch('action', { index: visibleItems[event.detail.index].index })
+    })
   })
 
   $: meanHeight = computeMeanHeight(itemHeights)
@@ -137,6 +146,7 @@
         offset={visibleItem.offset}
         key={visibleItem.key}
         index={visibleItem.index}
+        tabindex={tabindex[visibleItem.index]}
         bind:itemHeights />
     {/each}
   {/if}
