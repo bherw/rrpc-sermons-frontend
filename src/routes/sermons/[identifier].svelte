@@ -40,7 +40,9 @@
     .then(res => {
       let sermon = res.data.node
       speakerLink = `/sermons?query=speaker:"${sermon.speaker.name}"`
-      seriesLink = `/sermons?query=series:"${sermon.series.name}"&order=oldest_first`
+      if (sermon.series) {
+        seriesLink = `/sermons?query=series:"${sermon.series.name}"&order=oldest_first`
+      }
       titleWithSeries = makeTitleWithSeries(sermon)
       recordedAt = new Date(sermon.recordedAt).toLocaleString(undefined, {
         month: 'short',
