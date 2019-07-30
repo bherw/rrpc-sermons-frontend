@@ -3,15 +3,15 @@
   import { goto } from '@sapper/app'
   import { DateTime } from 'luxon'
 
-  export let sermon
-  export let showSpeaker = true
-  export let showSeries = true
+  export let id, title, recordedAt, scriptureFocus, scriptureReading
+  export let series = null
+  export let speaker = null
 
   // Ignored
   export let virtualIndex, virtualLength, virtualKey
 
-  $: titleWithSeries = showSeries ? makeTitleWithSeries(sermon) : sermon.title
-  $: recordedAtStr = formatDate(sermon.recordedAt)
+  $: titleWithSeries = makeTitleWithSeries({ series, title })
+  $: recordedAtStr = formatDate(recordedAt)
 
   function formatDate(recordedAt) {
     recordedAt = DateTime.fromISO(recordedAt)
@@ -59,18 +59,18 @@
 
 <li
   class="mdc-list-item"
-  class:mdc-list-item--three-line={showSpeaker}
-  on:click={() => goto(`/${sermon.id}`)}>
-  <a href="/{sermon.id}">
+  class:mdc-list-item--three-line={speaker}
+  on:click={() => goto(`/${id}`)}>
+  <a href="/{id}">
     <div class="mdc-list-item__text">
       <div class="primary">
         <div class="title">{titleWithSeries}</div>
         <div class="mdc-typography--caption date">{recordedAtStr}</div>
       </div>
       <div class="mdc-list-item__secondary-text">
-        <div>{sermon.scriptureFocus || sermon.scriptureReading}</div>
-        {#if showSpeaker}
-          <div class="caption">{sermon.speaker.name}</div>
+        <div>{scriptureFocus || scriptureReading}</div>
+        {#if speaker}
+          <div class="caption">{speaker.name}</div>
         {/if}
       </div>
     </div>

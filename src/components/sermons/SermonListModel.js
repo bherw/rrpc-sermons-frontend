@@ -29,7 +29,7 @@ export default class SermonListModel extends VirtualListModel {
       await this.loadMore()
     }
 
-    return { sermon: this._sermons.nodes[index] }
+    return this._sermons.nodes[index]
   }
 
   async loadMore() {
