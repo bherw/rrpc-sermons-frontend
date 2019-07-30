@@ -81,7 +81,7 @@
           <img src="/favicon.png" style="margin-right:16px" width="48" height="48" alt="RRPC" />
         </picture>
       </button>
-      <a href="//russellrpc.org" class="desktop">
+      <a href="//russellrpc.org" class="desktop" style="padding-right:16px">
         <picture>
           <source srcset="/logo-48.webp 1x, /logo-96.webp 2x, /logo.webp" type="image/webp" />
           <source srcset="/logo-48.png 1x, /logo-96.png 2x, /logo.png" />
