@@ -6,9 +6,13 @@
   export let id, title, recordedAt, scriptureFocus, scriptureReading
   export let series = null
   export let speaker = null
+  export let selected = false
+  export let tabindex = -1
 
   // Ignored
-  export let virtualIndex, virtualLength, virtualKey
+  export let virtualIndex = null,
+    virtualLength = null,
+    virtualKey = null
 
   $: titleWithSeries = makeTitleWithSeries({ series, title })
   $: recordedAtStr = formatDate(recordedAt)
@@ -38,6 +42,9 @@
     color: inherit;
     text-decoration: none;
   }
+  .mdc-list-item > a:focus {
+    outline: none;
+  }
   .primary {
     display: flex;
     align-content: center;
@@ -58,8 +65,11 @@
 <svelte:options immutable />
 
 <li
+  aria-selected={selected}
   class="mdc-list-item"
+  class:mdc-list-item--selected={selected}
   class:mdc-list-item--three-line={speaker}
+  {tabindex}
   on:click={() => goto(`/${id}`)}>
   <a href="/{id}">
     <div class="mdc-list-item__text">

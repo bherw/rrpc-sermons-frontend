@@ -15,6 +15,13 @@ query SermonQuery($id: ID!) {
         id
         name
         sermonsCount
+        sermonsNearId(id: $id, limit: 11) {
+          id
+          recordedAt
+          title
+          scriptureReading
+          scriptureFocus
+        }
       }
       audioUrl
       audioWaveformUrl

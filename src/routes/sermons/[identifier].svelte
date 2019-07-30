@@ -26,8 +26,12 @@
 
 <script>
   import { makeTitleWithSeries, formatRecordedAt } from 'components/sermons/util'
+  import { goto } from '@sapper/app'
   import AudioPlayer from 'components/sermons/AudioPlayer.svelte'
   import BiblePassages from 'components/sermons/BiblePassages.svelte'
+  import Button from 'components/material/Button.svelte'
+  import List from 'components/material/List.svelte'
+  import SermonListItem from 'components/sermons/SermonListItem.svelte'
   import Title from 'components/Title.svelte'
 
   export let id, preload, seek
@@ -60,10 +64,7 @@
     grid-gap: -1rem;
     margin: 0 16px;
   }
-  .container--with-aside {
-    display: grid;
-    grid-template-columns: [main] auto [aside] 25%;
-  }
+
   .main {
     grid-area: main;
     padding: 16px;
@@ -72,9 +73,21 @@
   .container:not(.container--with-aside) .main {
     margin: 0 auto;
   }
-  aside {
-    grid-area: aside;
-    padding: 16px;
+
+  .series-header {
+    padding: 0 16px;
+  }
+
+  @media screen and (min-width: 771px) {
+    .container--with-aside {
+      display: grid;
+      grid-template-columns: [main] auto [aside] 25%;
+    }
+
+    aside {
+      grid-area: aside;
+      padding: 16px;
+    }
   }
 
   @media screen and (max-width: 770px) {
@@ -127,6 +140,18 @@
                 {sermon.seriesIndex}/{sermon.series.sermonsCount} &mdash; {sermon.speaker.name}
               </div>
             </header>
+            <div>
+              <List
+                elements={sermon.series.sermonsNearId}
+                elementComponent={SermonListItem}
+                selected={sermon.series.sermonsNearId.filter(s => s.id === sermon.id)[0]}
+                on:action={ev => goto(`/${sermon.series.sermonsNearId[ev.detail.index].id}`)} />
+              <div class="mdc-card__actions">
+                <Button class="mdc-card__action mdc-card__action--button" href={seriesLink}>
+                  See all
+                </Button>
+              </div>
+            </div>
           </section>
         </aside>
       {/if}
