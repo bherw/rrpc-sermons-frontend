@@ -69,8 +69,7 @@
   class="mdc-list-item"
   class:mdc-list-item--selected={selected}
   class:mdc-list-item--three-line={speaker}
-  {tabindex}
-  on:click={() => goto(`/${id}`)}>
+  {tabindex}>
   <a href="/{id}">
     <div class="mdc-list-item__text">
       <div class="primary">
