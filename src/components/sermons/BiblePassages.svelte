@@ -155,6 +155,7 @@
     </div>
     <p>Loading...</p>
   {:then res}
+    {@html res.meta.fums}
     <div class="passages">
       {#each res.passages as passage}
         <div class="passage">
