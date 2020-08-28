@@ -1,4 +1,10 @@
-# Config
+# RRPC Sermons Frontend
+
+The frontend service powering [the Russell RPC Sermons website](http://sermons.russellrpc.org/). Built with [Svelte](https://svelte.dev), [Sapper](https://sapper.svelte.dev), [Material Design Components](https://github.com/material-components/material-components-web), and [wavesurfer.js](https://wavesurfer-js.org/).
+
+# Usage
+
+## Configuration
 
 Create `src/const/config.js`
 
@@ -9,13 +15,37 @@ export const devApi = '' // The development env api server base URL
 export const prodApi = '' // The production env api server base URL
 ```
 
-# Development mode
+## Deployment
+
+To build the application, run:
+
+```shell
+NODE_ENV=production npm run build
+```
+
+The following items must be deployed:
+
+```
+__sapper__/build
+package.json
+package-lock.json
+static
+```
+
+To execute the server, run:
+
+```shell
+npm install
+npm start
+```
+
+# Development
+
+## Running in development mode
 
 ```bash
 npm install
 npm run dev
 ```
 
-# Production mode and deployment
-
-To start a production version of your app, run `npm run build && npm start`. This will disable live reloading, and activate the appropriate bundler plugins.
+For more information, see [the Sapper documentation](https://sapper.svelte.dev/).
