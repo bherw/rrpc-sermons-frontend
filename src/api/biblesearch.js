@@ -17,9 +17,14 @@ export async function getPassagesFromNetwork(q, version) {
   const res = await get(`${apiBase}/v0/biblesearch/passages.js?q[]=${q}&version=${version}`)
   const passages = res.response.search.result.passages
 
-  passages.forEach(passage => {
-    passage.text = spanPassageText(passage.text)
-  })
+  passages
+    .forEach(passage => {
+      passage.text = spanPassageText(passage.text)
+    })
+    .catch(e => {
+      console.log('Error loading passages: ' + e)
+      throw e
+    })
 
   return { passages, meta: res.response.meta }
 }

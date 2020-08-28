@@ -175,6 +175,6 @@
     <div class="passage">
       <h1 class="mdc-typography--headline6">{reading}</h1>
     </div>
-    <p class="error">Error loading passages: {error}</p>
+    <p>Error loading passages</p>
   {/await}
 </section>
