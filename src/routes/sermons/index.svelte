@@ -153,7 +153,7 @@
     </div>
   </div>
 
-  {#await modelLoaded then }
+  {#await modelLoaded then _}
     {#if error[search]}
       <Error error={error[search]} />
     {:else}
