@@ -2,6 +2,15 @@
 
 The frontend service powering [the Russell RPC Sermons website](http://sermons.russellrpc.org/). Built with [Svelte](https://svelte.dev), [Sapper](https://sapper.svelte.dev), [Material Design Components](https://github.com/material-components/material-components-web), and [wavesurfer.js](https://wavesurfer-js.org/).
 
+# Features
+- sermon search via elasticsearch
+  - reacts instantly to reload from the backend
+  - search results displayed in a virtual list for performance
+- sermon display
+  - with wavesurfer audio player
+  - related sermons by series shown in sidebar
+  - scripture passages display highlights verses based on sermon's focus (passages loading currently non-functional due to the provider shutting down)
+
 # Usage
 
 ## Configuration
