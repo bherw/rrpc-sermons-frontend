@@ -1,6 +1,6 @@
 # RRPC Sermons Frontend
 
-The frontend service powering [the Russell RPC Sermons website](http://sermons.russellrpc.org/). Built with [Svelte](https://svelte.dev), [Sapper](https://sapper.svelte.dev), [Material Design Components](https://github.com/material-components/material-components-web), and [wavesurfer.js](https://wavesurfer-js.org/).
+The frontend service powering [the Russell RPC Sermons website](http://sermons.russellrpc.org/). Built with [Svelte](https://svelte.dev), [Sapper](https://sapper.svelte.dev), [Material Design Components](https://github.com/material-components/material-components-web), and [wavesurfer.js](https://wavesurfer-js.org/). [Backend](https://github.com/bherw/rrpc-sermons-backend)
 
 # Features
 - sermon search via elasticsearch
